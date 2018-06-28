@@ -1,0 +1,10 @@
+10.160.0.3 ansible_ssh_user=root ansible_ssh_pass=redhat
+10.142.0.2 ansible_ssh_user=root ansible_ssh_pass=redhat
+
+
+[DC]
+10.160.0.3
+10.142.0.2
+
+[db]
+10.160.0.3

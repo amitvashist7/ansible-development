@@ -1,0 +1,16 @@
+#
+ec2: 
+  region: ap-south-1
+  credentials: myansiblekeypair
+  image: ami-76d6f519
+  sg: ansibleSG
+  instance_type: t2.micro
+  subnet: subnet-4923eb05
+  public_ip: yes
+  count: 3
+  tags: 
+    Name: EC2_Ansible_App
+  volumes:
+    - device_name: /dev/xvda
+      volume_type: standard
+      volume_size: 8

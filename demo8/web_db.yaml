@@ -1,0 +1,56 @@
+---
+- hosts: DC
+  sudo: yes
+  vars:
+    http_port: 80
+    doc_root: /var/www/html/amit
+    doc_dir: /amit/
+  
+  tasks:
+  - name: Install Apache Packages on RedHat Family 
+    yum: name=httpd state=present
+    when: ansible_os_family=="RedHat"
+
+  - name: Install Apache Packages on Ubuntu Family 
+    apt: name=apache2 state=present
+    when: ansible_os_family=="Ubuntu"
+
+  - name: Start Apache Service
+    service: name=httpd state=started enabled=True
+
+  - name: Deply Configuration File
+    template: src=templates/httpd.j2 dest=/etc/httpd/conf/httpd.conf
+    notify:
+      - amit
+
+  - name: Create Site Location
+    file: path={{doc_root}} state=directory
+
+  - name: Deploy Site Files
+    template: src=templates/index.j2 dest={{doc_root}}/index.html
+
+
+  - name: Force to Flush Handlers
+    meta: flush_handlers
+
+
+  - name: Install MariaDB Packages
+    yum: name=mariadb-server state=present
+
+  - name: Service MariaDB Start
+    service: name=mariadb state=started
+
+
+  - name: Deploy Site Nothing
+    template: src=templates/abc.j2 dest=/var/www/html/abc.html
+    notify:
+      - nothing
+
+  - name: Stop Firewall
+    service: name=firewalld state=stopped enabled=False
+
+  handlers:
+  - name: amit
+    service: name=httpd state=restarted
+  - name: nothing
+    service: name=httpd state=restarted
