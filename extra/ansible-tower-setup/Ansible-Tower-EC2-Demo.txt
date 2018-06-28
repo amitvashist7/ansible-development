@@ -1,0 +1,61 @@
+Ansible-Tower Demo:
+===================
+
+Login -> Stting -> User -> {Amit (Sysadmin), devops (normal) } -> Project (Training) -> Team (DevOps).
+
+Add Users DevOps to Team DevOps as admin. 
+
+Add Inventory -> DevOps Inventory -> Add Host -> { IPs } -> Add Group [DC & DB] -> Associate Group to Host.
+
+Add Credentials -> Select Type Machine -> Username & Password. 
+
+Add Tempaltes -> Create New Tempalte
+
+Name				: Demo9
+JobType				: RUN 
+Inventory			: devops_inventory
+Project				: Training
+PlayBook			: demo9/web_db.yaml
+Credentials			: HostCredentials
+
+Save the changes. 
+
+-> Run the jobs from template.
+
+
+
+AWS Setup: 
+
+Add Credentials -> Select Type AWS Credentials  -> ACCESS_KEY & ACCESS_TOKEN.
+Add Credentials -> Select Type Machine ->  username: ec2-user & Key : SSH PEM Key. 
+
+Add Inventory -> Name:aws-ec2-inventory & Orgination: Default ->  Source Tab -> Name: aws-ec2-resource, Source: Amazon EC2, credential: aws ( Token Key AWS ). -> Save. -> Click on Sync Icon. 
+
+Add Tempaltes -> Create New Tempalte
+
+Name				: aws-ec2-deploy
+JobType				: RUN 
+Inventory			: aws-ec2-inventory
+Project				: Training
+PlayBook			: demo12/ec2-project/EC2/aws_ec2_site.yaml
+Credentials			: aws(Token) + aws(ssh)
+
+Save the changes. 
+
+-> Run the jobs from template.
+
+
+Add Tempaltes -> Create New Tempalte
+
+Name				: aws-web-deploy
+JobType				: RUN 
+Inventory			: aws-ec2-inventory
+Project				: Training
+PlayBook			: demo12/ec2-project/EC2_WEB/web_db_meta.yaml
+Credentials			: aws(Token) + aws(ssh)
+
+Save the changes. 
+
+-> Run the jobs from template.
+
+Done. 
